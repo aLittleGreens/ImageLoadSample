@@ -27,11 +27,12 @@ public class ImageLoader {
     //线程池，线程数量为CPU的数量
     ExecutorService mExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     //    private final ImageMemoryCache mImageCache;
-    private final ImageDiskLruCache mImageDiskLruCache;
+//    private final ImageDiskLruCache mImageDiskLruCache;
     private static int defaultlayoutId;
     private static int errorlayoutId;
-    private final DoubleCache doubleCache;
-    private static boolean isUseDiskCache; //是否用磁盘缓存，默认是双缓存
+    //    private final DoubleCache doubleCache;
+//    private static boolean isUseDiskCache; //是否用磁盘缓存，默认是双缓存
+    private ImageCache imageCache;
 
     public static void init(Context context) {
         mContext = context;
@@ -55,26 +56,29 @@ public class ImageLoader {
     private static void reBack() {
         defaultlayoutId = 0;
         errorlayoutId = 0;
-        isUseDiskCache = false;
     }
 
     private ImageLoader() {
-        doubleCache = new DoubleCache(mContext);
-//        mImageCache = new ImageMemoryCache();
-        mImageDiskLruCache = new ImageDiskLruCache(mContext);
+//        doubleCache = new DoubleCache(mContext);
+////        mImageCache = new ImageMemoryCache();
+//        mImageDiskLruCache = new ImageDiskLruCache(mContext);
     }
 
-    public ImageLoader displayImage(final String url, final ImageView imageView) {
-        Bitmap bitmap = null;
-        if (isUseDiskCache) {
-            bitmap = mImageDiskLruCache.get(url);
-        } else {
-            bitmap = doubleCache.get(url);
-        }
+    public ImageLoader setImageCache(ImageCache imageCache) {
+        this.imageCache = imageCache;
+        return this;
+    }
 
+    public void displayImage(final String url, final ImageView imageView) {
+        Bitmap bitmap = null;
+        if (imageCache == null) {
+            Log.e(TAG, "imageCache == null");
+            imageCache = DoubleCache.getInstance(mContext);
+        }
+        bitmap = imageCache.get(url);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-            return this;
+            return;
         } else {
             if (defaultlayoutId != 0) {
                 imageView.setImageResource(defaultlayoutId);
@@ -97,7 +101,7 @@ public class ImageLoader {
                 }
             });
         }
-        return this;
+        return;
     }
 
     public ImageLoader setDefaultImg(int defaultlayoutId) {
@@ -110,10 +114,10 @@ public class ImageLoader {
         return this;
     }
 
-    public ImageLoader setUseDiskCache(boolean isUseDiskCache) {
-        this.isUseDiskCache = isUseDiskCache;
-        return this;
-    }
+//    public ImageLoader setUseDiskCache(boolean isUseDiskCache) {
+//        this.isUseDiskCache = isUseDiskCache;
+//        return this;
+//    }
 
     public Bitmap downloadBitmap(String imageUrl) {
 
@@ -123,13 +127,7 @@ public class ImageLoader {
             URL url = new URL(imageUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             bitmap = BitmapFactory.decodeStream(conn.getInputStream());
-            if (isUseDiskCache) {
-                mImageDiskLruCache.put(imageUrl, bitmap);//存入磁盘
-            } else {
-                doubleCache.put(imageUrl, bitmap);
-            }
-//            mImageCache.put(imageUrl, bitmap);//存入内存
-
+            imageCache.put(imageUrl, bitmap);//存入内存
             conn.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();

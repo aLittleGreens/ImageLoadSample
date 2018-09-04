@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import com.ifreecomm.imageloadsample.disklrucache.DiskLruCache;
 import com.ifreecomm.imageloadsample.utils.MD5Util;
@@ -26,8 +27,9 @@ public class ImageDiskLruCache implements ImageCache{
     private DiskLruCache mDiskLruCache;
     private int mDiskCacheSize = 100 * 1024 * 1024;  //kb
 
-    public ImageDiskLruCache(Context context) {
+    private static ImageDiskLruCache instance = null;
 
+    private ImageDiskLruCache(Context context) {
         File cacheDir = getDiskCacheDir(context, "image");
         if (!cacheDir.exists()) {
             cacheDir.mkdirs();
@@ -44,8 +46,19 @@ public class ImageDiskLruCache implements ImageCache{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+    public static ImageDiskLruCache getInstance(Context context) {
+        if (instance == null) {
+            synchronized (ImageDiskLruCache.class) {
+                if (instance == null) {
+                    instance = new ImageDiskLruCache(context);
+                }
+            }
+        }
+        return instance;
+    }
+
 
     /**
      * 1、首先判断外部缓存如果这个手机没有SD卡，或者SD正好被移除了的情况，则缓存目录=context.getCacheDir().getPath()，即存到 /data/data/package_name/cache 这个文件系统目录下；
@@ -112,6 +125,9 @@ public class ImageDiskLruCache implements ImageCache{
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if(bitmap != null){
+            Log.e(TAG,"磁盘中加载");
         }
         return bitmap;
 

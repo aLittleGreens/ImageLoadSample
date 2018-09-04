@@ -16,8 +16,9 @@ public class ImageMemoryCache implements ImageCache {
     private static final String TAG = "ImageMemoryCache";
     private LruCache<String, Bitmap> mImageCache;
 
-    public ImageMemoryCache() {
+    private static ImageMemoryCache instance = null;
 
+    private ImageMemoryCache() {
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);    //计算可用的最大内存
         Log.e(TAG, "maxMemory:" + maxMemory);
         // 取1/4内存作为缓存
@@ -32,13 +33,27 @@ public class ImageMemoryCache implements ImageCache {
                 return bitmapSize;//计算每张图片的大小
             }
         };
+    }
 
+    public static ImageMemoryCache getInstance() {
+        if (instance == null) {
+            synchronized (ImageMemoryCache.class) {
+                if (instance == null) {
+                    instance = new ImageMemoryCache();
+                }
+            }
+        }
+        return instance;
     }
 
     @Override
     public Bitmap get(String imgUrl) {
         String key = MD5Util.hashKeyForDisk(imgUrl);
-        return mImageCache.get(key);
+        Bitmap bitmap = mImageCache.get(key);
+        if(bitmap != null){
+            Log.e(TAG,"内存中加载");
+        }
+        return bitmap;
     }
 
     @Override

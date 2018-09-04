@@ -1,12 +1,13 @@
 package com.ifreecomm.imageloadsample.adapter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.ifreecomm.imageloadsample.R;
+import com.ifreecomm.imageloadsample.imageload.DoubleCache;
 import com.ifreecomm.imageloadsample.imageload.ImageLoader;
 
 /**
@@ -16,9 +17,9 @@ import com.ifreecomm.imageloadsample.imageload.ImageLoader;
 public class ImageAdapter extends BaseAdapter {
     private String[] mData;
     private int layoutId;
-    private Activity context;
+    private Context context;
 
-    public ImageAdapter(Activity context, String[] mData, int layId) {
+    public ImageAdapter(Context context, String[] mData, int layId) {
         layoutId = layId;
         this.mData = mData;
         this.context = context;
@@ -50,6 +51,7 @@ public class ImageAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ImageLoader.getInstance().
+                setImageCache(DoubleCache.getInstance(context)).
                 setDefaultImg(R.mipmap.ic_launcher).
                 setErrorImg(R.mipmap.ic_launcher_round).
                 displayImage(mData[position], viewHolder.imageView);

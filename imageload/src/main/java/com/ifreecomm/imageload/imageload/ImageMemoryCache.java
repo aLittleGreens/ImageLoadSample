@@ -1,10 +1,11 @@
-package com.ifreecomm.imageloadsample.imageload;
+package com.ifreecomm.imageload.imageload;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.LruCache;
 
-import com.ifreecomm.imageloadsample.utils.MD5Util;
+import com.ifreecomm.imageload.utils.MD5Util;
+
 
 /**
  * Created by IT小蔡 on 2018-9-3.

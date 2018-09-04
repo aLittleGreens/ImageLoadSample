@@ -1,4 +1,4 @@
-package com.ifreecomm.imageloadsample.utils;
+package com.ifreecomm.imageload.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

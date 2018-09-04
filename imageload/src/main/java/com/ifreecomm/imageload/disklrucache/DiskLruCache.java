@@ -1,4 +1,4 @@
-package com.ifreecomm.imageloadsample.disklrucache;
+package com.ifreecomm.imageload.disklrucache;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;

@@ -1,4 +1,4 @@
-package com.ifreecomm.imageloadsample.imageload;
+package com.ifreecomm.imageload.imageload;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -8,8 +8,8 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
-import com.ifreecomm.imageloadsample.disklrucache.DiskLruCache;
-import com.ifreecomm.imageloadsample.utils.MD5Util;
+import com.ifreecomm.imageload.disklrucache.DiskLruCache;
+import com.ifreecomm.imageload.utils.MD5Util;
 
 import java.io.File;
 import java.io.IOException;

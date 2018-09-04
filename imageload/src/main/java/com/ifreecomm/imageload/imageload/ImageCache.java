@@ -1,4 +1,4 @@
-package com.ifreecomm.imageloadsample.imageload;
+package com.ifreecomm.imageload.imageload;
 
 import android.graphics.Bitmap;
 

@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.ifreecomm.imageload.imageload.DoubleCache;
+import com.ifreecomm.imageload.imageload.ImageLoader;
 import com.ifreecomm.imageloadsample.R;
-import com.ifreecomm.imageloadsample.imageload.DoubleCache;
-import com.ifreecomm.imageloadsample.imageload.ImageLoader;
 
 /**
  * Created by IT小蔡 on 2018-9-3.

@@ -1,4 +1,4 @@
-package com.ifreecomm.imageloadsample.disklrucache;
+package com.ifreecomm.imageload.disklrucache;
 
 /*
  * Copyright (C) 2012 The Android Open Source Project

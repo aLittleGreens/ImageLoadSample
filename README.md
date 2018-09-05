@@ -19,4 +19,21 @@ dependencies {
 
 
 
+## Useage 
+1. init The ImageLoad with ImageLoaderConfig
+public class BaseApp extends Application{
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ImageLoader.init(this);
+    }
+}
+2、load bitmap
+
+ImageLoader.getInstance().
+                setImageCache(DoubleCache.getInstance(context)).
+                setDefaultImg(R.mipmap.ic_launcher).
+                setErrorImg(R.mipmap.ic_launcher_round).
+                displayImage(mData[position], viewHolder.imageView);
 

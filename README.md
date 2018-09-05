@@ -5,8 +5,8 @@ Bitmap三级缓存，用面向对象六大原则书写，重点是理解设计�
 
 allprojects {
     repositories {
-      ...
-        maven { url 'https://jitpack.io' }
+	...
+	maven { url 'https://jitpack.io' }
     }
 }
 

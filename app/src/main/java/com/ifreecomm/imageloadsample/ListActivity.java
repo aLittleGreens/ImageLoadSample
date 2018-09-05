@@ -28,7 +28,6 @@ public class ListActivity extends AppCompatActivity {
     private void initView() {
 
         ListView listView = findViewById(R.id.listView);
-
         ImageAdapter adapter = new ImageAdapter(this,mDatas,R.layout.list_item_layout);
         listView.setAdapter(adapter);
     }

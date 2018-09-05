@@ -35,5 +35,5 @@ ImageLoader.getInstance().
                 setImageCache(DoubleCache.getInstance(context)).
                 setDefaultImg(R.mipmap.ic_launcher).
                 setErrorImg(R.mipmap.ic_launcher_round).
-                displayImage(mData[position], viewHolder.imageView);
+                displayImage(url, imageView);
 

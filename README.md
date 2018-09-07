@@ -17,10 +17,11 @@ dependencies {
 	        implementation 'com.github.cai784921129:ImageLoadSample:1.0'
 	}
 
-
+```
 
 ## Useage 
 1. init The ImageLoad with ImageLoaderConfig
+```java
 public class BaseApp extends Application{
 
     @Override
@@ -29,11 +30,13 @@ public class BaseApp extends Application{
         ImageLoader.init(this);
     }
 }
+```
 2、load bitmap
-
+```java
 ImageLoader.getInstance().
                 setImageCache(DoubleCache.getInstance(context)).
                 setDefaultImg(R.mipmap.ic_launcher).
                 setErrorImg(R.mipmap.ic_launcher_round).
                 displayImage(url, imageView);
 
+```

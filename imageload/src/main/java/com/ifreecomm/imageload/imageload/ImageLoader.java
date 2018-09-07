@@ -44,7 +44,7 @@ public class ImageLoader {
     public void init(ImageLoadConfig imageLoadConfig) {
         this.imageLoadConfig = imageLoadConfig;
         checkConfig();
-        this.mRequestQueue = new RequestQueue(imageLoadConfig.threadCount);
+        this.mRequestQueue = new RequestQueue(imageLoadConfig.getThreadCount());
         mRequestQueue.start();
     }
 
@@ -58,8 +58,8 @@ public class ImageLoader {
                     "you already called the init(ImageLoaderConfig config)");
         }
 
-        if (imageLoadConfig.loadPolicy == null) {
-            imageLoadConfig.loadPolicy = new SerialPolicy();
+        if (imageLoadConfig.getLoadPolicy() == null) {
+            imageLoadConfig.setLoadPolicy(new SerialPolicy());
         }
 
     }

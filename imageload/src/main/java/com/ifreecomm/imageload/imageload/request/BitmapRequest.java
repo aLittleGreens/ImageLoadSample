@@ -30,7 +30,7 @@ public class BitmapRequest implements Comparable<BitmapRequest> {
     /**
      * 加载策略
      */
-    LoadPolicy mLoadPolicy = ImageLoader.getInstance().getImageLoadConfig().loadPolicy;
+    LoadPolicy mLoadPolicy = ImageLoader.getInstance().getImageLoadConfig().getLoadPolicy();
 
     public BitmapRequest(ImageView imageView, String imgUrl, DisplayConfig displayConfig, ImageLoader.ImageListener listener) {
         mImageViewRef = new WeakReference<>(imageView);

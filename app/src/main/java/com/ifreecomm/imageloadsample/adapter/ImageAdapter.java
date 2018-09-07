@@ -1,6 +1,7 @@
 package com.ifreecomm.imageloadsample.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -43,7 +44,8 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
-            convertView = View.inflate(context, layoutId, null);
+            convertView = LayoutInflater.from(context).inflate(layoutId, null);
+//            convertView = View.inflate(context, layoutId, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -52,7 +54,7 @@ public class ImageAdapter extends BaseAdapter {
         ImageLoader.getInstance().
                 setLoadingRedId(R.mipmap.ic_launcher).
                 setErrorResId(R.mipmap.ic_launcher_round).
-                displayImage(viewHolder.imageView,mData[position]);
+                displayImage(viewHolder.imageView, mData[position]);
         return convertView;
     }
 

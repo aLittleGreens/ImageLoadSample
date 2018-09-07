@@ -43,7 +43,7 @@ public abstract class AbsLoader implements Loader {
     /**
      * 图片缓存
      */
-    private static ImageCache mCache = ImageLoader.getInstance().getImageLoadConfig().bitmapCache;
+    private static ImageCache mCache = ImageLoader.getInstance().getImageLoadConfig().getBitmapCache();
 
     @Override
     public final void loadImage(BitmapRequest request) {

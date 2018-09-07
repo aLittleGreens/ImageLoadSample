@@ -1,7 +1,7 @@
 # ImageLoadSample
 Bitmap三级缓存，用面向对象六大原则书写，重点是理解设计模式
 
-作者主要是以学习为主，并不是为了造轮子
+作者主要是以学习为主，并不是为了造轮子，不作项目使用
 
 ## Download
 Add the following dependencies in project's gradle.

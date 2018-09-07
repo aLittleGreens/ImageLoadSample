@@ -14,8 +14,8 @@ allprojects {
 }
 
 dependencies {
-	        implementation 'com.github.cai784921129:ImageLoadSample:1.0'
-	}
+ 	implementation 'com.github.cai784921129:ImageLoadSample:1.1'
+}
 
 ```
 

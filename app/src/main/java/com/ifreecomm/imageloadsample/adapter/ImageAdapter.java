@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.ifreecomm.imageload.imageload.DoubleCache;
 import com.ifreecomm.imageload.imageload.ImageLoader;
 import com.ifreecomm.imageloadsample.R;
 
@@ -51,10 +50,9 @@ public class ImageAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ImageLoader.getInstance().
-                setImageCache(DoubleCache.getInstance(context)).
-                setDefaultImg(R.mipmap.ic_launcher).
-                setErrorImg(R.mipmap.ic_launcher_round).
-                displayImage(mData[position], viewHolder.imageView);
+                setLoadingRedId(R.mipmap.ic_launcher).
+                setErrorResId(R.mipmap.ic_launcher_round).
+                displayImage(viewHolder.imageView,mData[position]);
         return convertView;
     }
 

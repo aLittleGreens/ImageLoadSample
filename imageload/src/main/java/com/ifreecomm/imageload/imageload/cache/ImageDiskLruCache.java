@@ -1,4 +1,4 @@
-package com.ifreecomm.imageload.imageload;
+package com.ifreecomm.imageload.imageload.cache;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.ifreecomm.imageload.disklrucache.DiskLruCache;
-import com.ifreecomm.imageload.utils.MD5Util;
+import com.ifreecomm.imageload.imageload.request.BitmapRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * 控制硬盘缓存
  */
 
-public class ImageDiskLruCache implements ImageCache{
+public class ImageDiskLruCache implements ImageCache {
     private static final String TAG = "ImageDiskLruCache";
     private DiskLruCache mDiskLruCache;
     private int mDiskCacheSize = 100 * 1024 * 1024;  //kb
@@ -74,20 +74,23 @@ public class ImageDiskLruCache implements ImageCache{
     }
 
     @Override
-    public void put(String address, Bitmap bitmap) {
-        if (address == null || bitmap == null) {
+    public void put(BitmapRequest bitmapRequest, Bitmap bitmap) {
+        if (bitmapRequest == null || bitmap == null) {
+            return;
+        }
+        if (bitmapRequest.justCacheInMem) {
+            Log.e(TAG, "### 仅缓存在内存中");
             return;
         }
         OutputStream outputStream = null;
         if (mDiskLruCache != null) {
-            String key = MD5Util.hashKeyForDisk(address);
             try {
                 //通过key值来获得一个Snapshot，如果Snapshot存在，则移动到LRU队列的头部来，
                 // 通过Snapshot可以得到一个输入流InputStream
-                DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
+                DiskLruCache.Snapshot snapshot = mDiskLruCache.get(bitmapRequest.md5Imgurl);
                 if (snapshot == null) {
                     //通过key可以获得一个DiskLruCache.Editor，通过Editor可以得到一个输出流，进而缓存到本地存储上
-                    DiskLruCache.Editor editor = mDiskLruCache.edit(key);
+                    DiskLruCache.Editor editor = mDiskLruCache.edit(bitmapRequest.md5Imgurl);
                     if (editor != null) {
                         outputStream = editor.newOutputStream(0);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -113,11 +116,10 @@ public class ImageDiskLruCache implements ImageCache{
     }
 
     @Override
-    public Bitmap get(String imageUrl) {
+    public Bitmap get(BitmapRequest bitmapRequest) {
         Bitmap bitmap = null;
-        String key = MD5Util.hashKeyForDisk(imageUrl);
         try {
-            DiskLruCache.Snapshot snapShot = mDiskLruCache.get(key);
+            DiskLruCache.Snapshot snapShot = mDiskLruCache.get(bitmapRequest.md5Imgurl);
             if (snapShot != null) {
                 InputStream inputStream = snapShot.getInputStream(0);
                 bitmap = BitmapFactory.decodeStream(inputStream);
@@ -126,21 +128,19 @@ public class ImageDiskLruCache implements ImageCache{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(bitmap != null){
-            Log.e(TAG,"磁盘中加载");
+        if (bitmap != null) {
+            Log.e(TAG, "磁盘中加载");
         }
         return bitmap;
 
     }
 
-    public boolean remove(String imageUrl) {
-        String key = MD5Util.hashKeyForDisk(imageUrl);
+    public void remove(BitmapRequest bitmapRequest) {
         try {
-            return mDiskLruCache.remove(key);
+            mDiskLruCache.remove(bitmapRequest.md5Imgurl);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
 

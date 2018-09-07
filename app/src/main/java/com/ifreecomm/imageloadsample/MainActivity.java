@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     String url1 = "http://img.my.csdn.net/uploads/201309/01/1378037235_7476.jpg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +22,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void down(View view) {
-        ImageLoader.getInstance().displayImage(url1,imageView);
+        ImageLoader.getInstance().
+                displayImage(imageView, url1);
     }
 
     public void listLoad(View view) {
-        startActivity(new Intent(this,ListActivity.class));
+        startActivity(new Intent(this, ListActivity.class));
     }
 }

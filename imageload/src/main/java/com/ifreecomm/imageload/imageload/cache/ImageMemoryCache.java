@@ -1,10 +1,10 @@
-package com.ifreecomm.imageload.imageload;
+package com.ifreecomm.imageload.imageload.cache;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.LruCache;
 
-import com.ifreecomm.imageload.utils.MD5Util;
+import com.ifreecomm.imageload.imageload.request.BitmapRequest;
 
 
 /**
@@ -48,19 +48,22 @@ public class ImageMemoryCache implements ImageCache {
     }
 
     @Override
-    public Bitmap get(String imgUrl) {
-        String key = MD5Util.hashKeyForDisk(imgUrl);
-        Bitmap bitmap = mImageCache.get(key);
-        if(bitmap != null){
-            Log.e(TAG,"内存中加载");
+    public Bitmap get(BitmapRequest bitmapRequest) {
+        Bitmap bitmap = mImageCache.get(bitmapRequest.md5Imgurl);
+        if (bitmap != null) {
+            Log.e(TAG, "内存中加载");
         }
         return bitmap;
     }
 
     @Override
-    public void put(String url, Bitmap bitmap) {
-        String key = MD5Util.hashKeyForDisk(url);
-        mImageCache.put(key, bitmap);
+    public void put(BitmapRequest bitmapRequest, Bitmap bitmap) {
+        mImageCache.put(bitmapRequest.md5Imgurl, bitmap);
+    }
+
+    @Override
+    public void remove(BitmapRequest bitmapRequest) {
+        mImageCache.remove(bitmapRequest.md5Imgurl);
     }
 
 }

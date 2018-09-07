@@ -22,21 +22,38 @@ dependencies {
 ## Useage 
 1. init The ImageLoad with ImageLoaderConfig
 ```java
-public class BaseApp extends Application{
+public class BaseApp extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ImageLoader.init(this);
+        ImageLoadConfig imageLoadConfig = new ImageLoadConfig().
+                setLoadPolicy(new SerialPolicy()).	//设置队列顺序，默认是顺序
+                setCache(DoubleCache.getInstance(this)).	//设置缓存策略，默认内存缓存
+                setLoadingPlaceholder(R.drawable.loading).
+                setNotFoundPlaceholder(R.drawable.not_found).
+                setThreadCount(5);	//设置线程数量，默认cpu核数+1
+        ImageLoader.getInstance().init(imageLoadConfig);
     }
 }
 ```
-2、load bitmap
+## load bitmap
+a、加载网络图片
 ```java
-ImageLoader.getInstance().
-                setImageCache(DoubleCache.getInstance(context)).
-                setDefaultImg(R.mipmap.ic_launcher).
-                setErrorImg(R.mipmap.ic_launcher_round).
-                displayImage(url, imageView);
+ ImageLoader.getInstance().
+                setLoadingRedId(R.mipmap.ic_launcher).
+                setErrorResId(R.mipmap.ic_launcher_round).
+                displayImage(imageView,imgUrl);
 
 ```
+b、加载sdcard图片（加载本地图片没有缓存，只是对bitmap做个2次采样）
+```java
+ImageLoader.getInstance().
+                displayImage(imageView,"file://sdcard/xxx/image.jpg");
+```
+c、加载resID资源
+```java
+ ImageLoader.getInstance().
+                displayImage(imageView, "res://"+R.mipmap.ic_launcher_round);
+```
+
